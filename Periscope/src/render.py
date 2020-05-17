@@ -4,8 +4,8 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
-from Periscope.src.system.periscope import Periscope
-from Periscope.src.system.target import Target
+from src.system.periscope import Periscope
+from src.system.target import Target
 
 RED = (1.0, 0., 0.)
 WHITE = (1., 1., 1.)

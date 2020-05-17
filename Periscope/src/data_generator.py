@@ -1,8 +1,8 @@
-from Periscope.src.parser import parse
-from Periscope.src.system.periscope import Periscope, Target, MirrorLocation
+from src.parser import parse
+from src.system.periscope import Periscope, Target, MirrorLocation
 import random
-from Periscope.src.geometry import *
-from Periscope.src.render import Renderer, pygame
+from src.geometry import *
+from src.render import Renderer, pygame
 import math
 
 class Generator:
@@ -274,7 +274,7 @@ class Generator:
 
 
 if __name__ == '__main__':
-    gen = Generator('2d')
+    gen = Generator('my_conf')
     # gen.render_shell()
     gen.writer_shell()
     gen.test_shell()

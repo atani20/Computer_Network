@@ -1,10 +1,10 @@
 from enum import Enum
-from Periscope.src.render import Renderer, pygame
-from Periscope.src.system.periscope import Periscope, MirrorLocation, Target
-from Periscope.src.parser import parse, get_project_root
+from src.render import Renderer, pygame
+from src.system.periscope import Periscope, MirrorLocation, Target
+from src.parser import parse, get_project_root
 # from Periscope.src.system.ge
 import multiprocessing as mp
-from Periscope.src.algorithms.direct import DirectAlgorithm, Triangle, Point3d
+from src.algorithms.direct import DirectAlgorithm, Triangle, Point3d
 import sys
 import datetime
 
@@ -35,6 +35,7 @@ class PeriscopeApplication:
                      Point3d(0.5, 0.4, 0.1),
                      Point3d(0.2, 0.6, 0.5)
                      ))
+        p_target = Point3d(0.62, 0.66, 0)
         tee = Target(p_target, config["target_radius"])
         self.periscope.set_target(tee)
 
@@ -59,7 +60,7 @@ class PeriscopeApplication:
                             args=(self.plane_3_queue, self.plane_3_points, self.periscope, MirrorLocation.THIRD))
         else:  # algorithm == SolveAlgorithm.NEURAL_NET:
             from keras.models import load_model
-            from Periscope.src.algorithms.net import NeuralNetAlgorithm
+            from src.algorithms.net import NeuralNetAlgorithm
             model = load_model(str(get_project_root()) + '\\src\\neuralnet\\' + self.input_model + '_model.h5')
             self.up_plane_process: mp.Process = mp.Process(target=NeuralNetAlgorithm.run,
                         args=(self.up_plane_queue, self.up_plane_points, self.periscope, MirrorLocation.UP, model))
@@ -205,7 +206,7 @@ if __name__ == '__main__':
     if n > 2 and sys.argv[2] == 'net':
         algorithm = SolveAlgorithm.NEURAL_NET
 
-    input_model: str = '2d'
+    input_model: str = 'my_conf'
     algorithm: SolveAlgorithm = SolveAlgorithm.NEURAL_NET
     # algorithm: SolveAlgorithm = SolveAlgorithm.DIRECT
     app = PeriscopeApplication(input_model, algorithm)

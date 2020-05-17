@@ -17,11 +17,11 @@ def build_model(model):
 
     model.compile(loss='mean_squared_error', optimizer='adam', metrics=['accuracy'])  #  mean_squared_error
 
-    model.fit(X, y, epochs=200, batch_size=40)
+    model.fit(X, y, epochs=400, batch_size=40)
 
     model.save(model_file)
     _, accuracy = model.evaluate(X, y)
     print('Accuracy: %.2f' % (accuracy*100))
 
 if __name__ == '__main__':
-    build_model('2d')
+    build_model('my_conf')
