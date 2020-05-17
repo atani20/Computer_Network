@@ -1,5 +1,5 @@
 import json
-from src.geometry import Point3d, Vector
+from Periscope.src.geometry import Point3d, Vector
 from pathlib import Path
 
 def get_project_root() -> Path:
@@ -18,6 +18,11 @@ def parse(model: str) -> {}:
             Point3d(configs['down_tr'][0][0], configs['down_tr'][0][1], configs['down_tr'][0][2]),
             Point3d(configs['down_tr'][1][0], configs['down_tr'][1][1], configs['down_tr'][1][2]),
             Point3d(configs['down_tr'][2][0], configs['down_tr'][2][1], configs['down_tr'][2][2]),
+        ],
+        '3_tr': [
+            Point3d(configs['3_tr'][0][0], configs['3_tr'][0][1], configs['3_tr'][0][2]),
+            Point3d(configs['3_tr'][1][0], configs['3_tr'][1][1], configs['3_tr'][1][2]),
+            Point3d(configs['3_tr'][2][0], configs['3_tr'][2][1], configs['3_tr'][2][2]),
         ],
         'up_triangle': [
             Point3d(configs['up_triangle'][0][0], configs['up_triangle'][0][1], configs['up_triangle'][0][2]),

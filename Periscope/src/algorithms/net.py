@@ -1,8 +1,8 @@
-from src.system.periscope import Periscope, Angle
+from Periscope.src.system.periscope import Periscope, Angle
 from keras.models import load_model
 import numpy
-from src.geometry import Point3d
-from src.system.periscope import MirrorLocation
+from Periscope.src.geometry import Point3d
+from Periscope.src.system.periscope import MirrorLocation
 import multiprocessing as mp
 
 def add_point_to_list(str_list: [], p: Point3d):
@@ -12,10 +12,10 @@ def add_point_to_list(str_list: [], p: Point3d):
 
 
 class NeuralNetAlgorithm:
-    # def __init__(self):
-    #     self.model = load_model('./neuralnet/my_model.h5')
-    #
-    # # for all in one process implementation
+    def __init__(self):
+        self.model = load_model('./neuralnet/my_model.h5')
+
+    # for all in one process implementation
     # def step(self, periscope: Periscope, up, down):
     #     input_list = [periscope.target.location.y, periscope.target.location.z]
     #
@@ -28,14 +28,20 @@ class NeuralNetAlgorithm:
     #     periscope.mirror_up.triangle = periscope.mirror_up.triangle.rotate_plane(angles[0][4], Angle.PITCH)
     #     periscope.mirror_up.triangle = periscope.mirror_up.triangle.rotate_plane(angles[0][5], Angle.ROLL)
     #
+    #     periscope.mirror_3.triangle = up.rotate_plane(angles[0][6], Angle.YAW)
+    #     periscope.mirror_3.triangle = periscope.mirror_up.triangle.rotate_plane(angles[0][7], Angle.PITCH)
+    #     periscope.mirror_3.triangle = periscope.mirror_up.triangle.rotate_plane(angles[0][8], Angle.ROLL)
+
     @staticmethod
     def run(self_queue: mp.Queue, arr, periscope: Periscope, plane_loc: MirrorLocation, model):
         down = periscope.mirror_down.triangle
         up = periscope.mirror_up.triangle
+        third = periscope.mirror_3.triangle
         while True:
             periscope.target = self_queue.get()
 
             angles = model.predict(numpy.array([[periscope.target.location.y, periscope.target.location.z]]))
+
             periscope.mirror_down.triangle = down.rotate_plane(angles[0][0], Angle.YAW)
             periscope.mirror_down.triangle = periscope.mirror_down.triangle.rotate_plane(angles[0][1], Angle.PITCH)
             periscope.mirror_down.triangle = periscope.mirror_down.triangle.rotate_plane(angles[0][2], Angle.ROLL)
@@ -44,13 +50,21 @@ class NeuralNetAlgorithm:
             periscope.mirror_up.triangle = periscope.mirror_up.triangle.rotate_plane(angles[0][4], Angle.PITCH)
             periscope.mirror_up.triangle = periscope.mirror_up.triangle.rotate_plane(angles[0][5], Angle.ROLL)
 
+            periscope.mirror_3.triangle = third.rotate_plane(angles[0][6], Angle.YAW)
+            periscope.mirror_3.triangle = periscope.mirror_3.triangle.rotate_plane(angles[0][7], Angle.PITCH)
+            periscope.mirror_3.triangle = periscope.mirror_3.triangle.rotate_plane(angles[0][8], Angle.ROLL)
+
             self_plane = periscope.mirror_down.triangle
             if plane_loc == MirrorLocation.UP:
                 self_plane = periscope.mirror_up.triangle
 
+            if plane_loc == MirrorLocation.THIRD:
+                self_plane = periscope.mirror_3.triangle
+
             arr[0] = self_plane.point_b.x
             arr[1] = self_plane.point_b.y
             arr[2] = self_plane.point_b.z
+
             arr[3] = self_plane.point_c.x
             arr[4] = self_plane.point_c.y
             arr[5] = self_plane.point_c.z

@@ -1,10 +1,11 @@
-from src.geometry import *
-from src.system.mirror import Mirror
-from src.system.target import Target
+from Periscope.src.geometry import *
+from Periscope.src.system.mirror import Mirror
+from Periscope.src.system.target import Target
 
 class MirrorLocation(Enum):
     UP = 1
     DOWN = 2
+    THIRD = 3
 
 class Periscope:
 
@@ -16,13 +17,14 @@ class Periscope:
         self.mirror_down = Mirror(Triangle(points3_down_tr[0], points3_down_tr[1], points3_down_tr[2]))
         points3_up_tr = config['up_triangle']
         self.mirror_up = Mirror(Triangle(points3_up_tr[0], points3_up_tr[1], points3_up_tr[2]))
-
+        points3_3_tr = config['3_tr']
+        self.mirror_3 = Mirror(Triangle(points3_3_tr[0], points3_3_tr[1], points3_3_tr[2]))
         self.target: Target = Target
 
     def set_target(self, target: Target):
         self.target = target
 
     def ray_to_aim(self) -> Ray:
-        return self.laser.reflect_plane(self.mirror_down.triangle).reflect_plane(self.mirror_up.triangle)
+        return self.laser.reflect_plane(self.mirror_down.triangle).reflect_plane(self.mirror_up.triangle).reflect_plane(self.mirror_3.triangle)
 
 

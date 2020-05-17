@@ -8,11 +8,12 @@ def build_model(model):
     data_set = loadtxt(data_set_file, delimiter=',')
 
     X = data_set[:,0:2] # dataset[:,1:15]
-    y = data_set[:,2:8]
+    y = data_set[:,2:11]
 
     model = Sequential()
-    model.add(Dense(12, input_dim=2, activation='tanh'))
-    model.add(Dense(6, activation='tanh'))
+    model.add(Dense(15, input_dim=2, activation='tanh'))
+    model.add(Dense(10, input_dim=2, activation='tanh'))
+    model.add(Dense(9, activation='tanh'))
 
     model.compile(loss='mean_squared_error', optimizer='adam', metrics=['accuracy'])  #  mean_squared_error
 
@@ -23,4 +24,4 @@ def build_model(model):
     print('Accuracy: %.2f' % (accuracy*100))
 
 if __name__ == '__main__':
-    build_model('3d')
+    build_model('2d')

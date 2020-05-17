@@ -1,7 +1,7 @@
 import math
 
-from src.geometry import *
-from src.system.periscope import *
+from Periscope.src.geometry import *
+from Periscope.src.system.periscope import *
 import multiprocessing as mp
 
 
@@ -9,6 +9,7 @@ class DirectAlgorithm:
     @staticmethod
     def final_ray_target_diff(laser: Ray, down_plane: Triangle, up_plane: Triangle, target: Point3d) -> float:
         ray_to_target = laser.reflect_plane(down_plane).reflect_plane(up_plane)
+        # ray_to_target = laser.reflect_plane(down_plane).reflect_plane(up_plane).reflect_plane(plane_3)
         return target.distance_to_line(ray_to_target.startPos, ray_to_target.startPos + ray_to_target.dir)
 
     @staticmethod
